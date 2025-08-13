@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mphohadi's Ultimate Girly Hobby Experience</title>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+    body{
+        background: linear-gradient(135deg,#ffd1dc,#ffb7c5);
+        padding: 20px;
+        color: #5a3d5c;
+        min-height: 100vh;
+        transition: all 0.5s ease;
+        overflow-x: hidden;
+    }
+
+    body.dark-theme{
+        background: linear-gradient(135deg,#1a1a2e,#16213e);
+        color: #e6e6ff;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    header{
+        text-align: center;
+        padding: 30px ;
+    }
+
+    h1{
+        font-size: 2,8rem;
+        margin-bottom: 15px;
+        color: #d6409f;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+
+    body.dark-theme h1{
+        color: #ff9ec5;
+    }
+
+    .subtitle {
+        font-size: 1.1rem;
+        max-width: 700px;
+        margin: 0 auto 30px;
+        color: #7a4988;
+    }
+
+    body.dark-theme .subtitle {
+        color: #c0a4ff;
+    }
+
+    .buttons-container{
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .action-button {
+        background: #d6409f;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: bold;
+        box-shadow:  0 4px 15px rgba (214,64,159,0.3);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .action-button:hover{
+        background: #ff1493;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(214,64,159,0.3);
+    }
+
+    body.dark-theme.action-button{
+        background: #9d4edd;
+        box-shadow: 0 4px 15px rgba(157,78,221,0.3);
+    }
+
+    body.dark-theme.action-button:hover{
+        background: #c77dff;
+    }
+
+
+    .image-grid{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+        gap: 25px;
+        margin:40px 0;
+    }
+
+    .image-card{
+        background: rgba(255,255,255,0.85);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.085);
+        transition: all0.4s ease;
+        height: 350px;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        position: relative;
+    }
+
+    body.dark-theme.image-card{
+        background: rgba(30,30,30,0.8);
+        box-shadow: 0 10px 30px rgba(157,78,221,0.3);
+    }
+
+    .image-card:hover{
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(214,64,159,0.25);
+    }
+
+
+    body.dark-theme.image-card:hover {
+        box-shadow: 0 15px 40px rgba(157,78,221,0.3);
+    }
+
+    .image-container {
+        height: 250px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .image-container img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .image-card:hover.image-container img{
+        transform: scale(1.1)
+    }
+
+    .image-info{
+        padding: 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .image-info h3 {
+        font-size: 1.3rem;
+        margin-bottom: 8px;
+        color: #d6409f;
+    }
+
+    body.dark-theme.image-info h3 {
+        color: #ff9ec5;
+    }
+
+    .image-info p {
+        font-size: 0.9rem;
+        color: #7a4988;
+    }
+
+    body.dark-theme .image-info p{
+        color: #c0a4ff;
+    }
+
+    @keyframes clickAnimation {
+        0%{transform: scale(1);}
+        50%{transform: scale(0.95) rotate(3deg);}
+        100%{transform: scale(1);}
+    }
+
+    .image-card.clicked {
+        animation: clickAnimation 0.4s ease;
+    }
+
+    .modal{
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+    }
+
+
+    .modal.active {
+        display: flex;
+        opacity: 1;
+        pointer-events: all;
+    }
+
+
+    .modal-content {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        text-align: center;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 14px 50px rgba(0,0,0,0.3);
+        transform: translateY(-30px);
+        opacity: 0;
+        transform: all 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
+        opacity: 0;
+        transition: all 0.5s cubic-bezier(0.175,0.885,0.32,0.272);
+    }
+
+    body.dark-theme.modal-content{
+        background: #2d2d44;
+    } 
+
+    .modal.active.modal-content{
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .modal h2 {
+        font-size: 2em;
+        margin-bottom: 20px;
+        color:#d6409f;
+    }
+
+    body.dark-theme.modal h2{
+        color: #ff9ec5;
+    }
+
+    .modal p{
+        font-size: 1.2em;
+        margin-bottom: 30px;
+        line-height: 1.6;
+    }
+
+    .modal-buttons{
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .modal-button{
+        padding: 12px 30px;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    .modal-button.yes {
+        background: #4CAF50;
+        color: white;
+    }
+
+    .modal-button.no {
+        background: #f44336;
+        color: white;
+    }
+
+    .modal-button:hover{
+        transform: scale(1.05);
+    }
+
+    footer{
+        text-align: center;
+        padding: 30px 0 20px;
+        margin-top: 40px;
+        border-top: 1px solid rgba(214,64,159,0.2);
+    }
+
+    body.darh-theme footer {
+        border-top: 1px solid rgba(157,78,221,0.2);
+    }
+
+    .creator {
+        font-size: 1.4rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #d6409f;
+    }
+
+    body.dark-theme.creator{
+        color: #ff9ec5;
+    }
+
+    .copyright{
+        color: #7a4988;
+        font-size: 0.9rem;
+    }
+
+    body.dark-theme.copyright{
+        color: #b8b5ff;
+    }
+
+    .heart{
+        position: fixed;
+        font-size: 2rem;
+        color: #ff1493;
+        pointer-events: none;
+        animation: float 5s ease-in-out forwards;
+        z-index: 999;
+    }
+
+    @keyframes float {
+        0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100vh) rotate(360deg);
+            opacity: 0;
+        }
+    }
+
+    @media (max-width: 768px) {
+        h1{
+            font-size: 2.2rem;
+        }
+
+        .image-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .buttons-container {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+</style>
+</head>
+<body>
+    <div class="modal" id="loveModal">
+        <div class="modal-content">
+            <h2 id="greeting">Hello,Friend!</h2>
+            <p>Do you love Mphohadi's girly hobby showcase?</p>
+            <div class="modal-buttons">
+                <button class="modal-button yes" id="yesButton">Yes!</button>
+                <button class="modal-button no" id="noButton">No</button>
+            </div>
+        </div>
+    </div>
+
+        <div class="container">
+            <header>
+                <h1>Mphohadi's Girly Hobby Showcase</h1>
+                <p class="subtitle">A beautiful collection of creative hobbies with interactive elements</p>
+            
+                <div class="buttons-container">
+                    <button class="action-button" id="themeToggle">
+                        <i class="fas fa-moon"></i>   Toggle Dark Mode
+                    </button> 
+                
+                <button class="action-button" id="loveButton">
+                    <i class="fas fa-heart"></i> Love Check
+                </button>
+                </div>
+            </header>
+
+            <div class="image-grid">
+                <div class="image-card">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1565206776249-a01813727c94?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZmFzaGlvbiUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D"
+                        alt="Fashion Design">
+                </div>
+                <div class="image-info">
+                    <h3>Fashion Design</h3>
+                    <p>Creatin beautiful clothing and assessories</p>
+                </div>
+                </div>
+            
+                <div class="image-card">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWFrZXVwfGVufDB8fDB8fHww"
+                        alt="Makeup Artistry">
+                    </div>
+                    <div class="image-info">
+                    <h3>Makeup Artistry</h3>
+                    <p> Exploring creative makeup techniques</p>
+                </div>
+        </div>
+
+        <div class="image-card">
+            <div class="image-container">
+                <img src="https://plus.unsplash.com/premium_photo-1722945695247-9232f08c7218?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmxvcmFsJTIwYXJyYW5nZW1lbnRzfGVufDB8fDB8fHww"
+                alt="Floral Arrangements">
+            </div>
+            <div class="image-info">
+            <h3> Floral Arrangements</h3>
+            <p>Crafting beautiful flower display</p>
+        </div>
+        </div>
+
+        <div class="image-card">
+            <div class="image-container">
+                <img src="https://media.istockphoto.com/id/1196172395/photo/in-the-photo-studio-with-professional-equipment-portrait-of-the-famous-photographer-holding.webp?a=1&b=1&s=612x612&w=0&k=20&c=Gkkc7r5QKaotfTlmaWXNeqAwPjp9knDVhZ9dC98gfbk="
+                alt="Fashion photography">
+            </div>
+            <div class="image-info">
+            <h3>Fashion photography</h3>
+            <p>Capturing style and beauty</p>
+        </div>
+    </div>
+
+    <div class="image-card">
+        <div class="image-container">
+            <img src="https://plus.unsplash.com/premium_photo-1681965543217-444202c315e6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGxhbnRpbmd8ZW58MHx8MHx8fDA%3D"
+            alt="Planting">
+        </div>
+        <div class="image-info">
+        <h3>Planting</h3>
+        <p>Find joy in the simple act of planting</p>
+    </div>
+    </div>
+
+    <div class="image-card">
+        <div class="image-container">
+            <img src="https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8aGFpciUyMGRyZXNzZXJ8ZW58MHx8MHx8fDA%3D"
+            alt="Hair dressing">
+        </div>
+        <div class="image-info">
+            <h3>Hair dressing </h3>
+            <p>Fresh CUT, Fresh START!</p>
+        </div>
+    </div>
+    </div>
+
+    <div class="description">
+        <h2 style="text-align: center; margin-bottom: 20px;">About my Journey</h2>
+        <p style="text-align: center; max-width: 800px; margin: 0 auto 20px; line-height: 1.7;">
+            Welcome to my world of creativity! This showcase represents my passion for all things beautiful and 
+            artistic.Each image demonstrates a different aspect of my girly hobbies that bring me joy and fulfillment.
+            From fashion design to Floral Arrangements, these creative outlets allow me to express myself and explore my artistic side.
+        </p>
+        <p style="text-align: center; max-width: 800px; margin: 0 auto; line-height: 1.7;">
+        Click on my image to seee a fun animation , use the dark toggle to change the theme,
+        and try "Love Check" button to interact with the showcase❤️!
+        </p>
+    </div>
+
+    <footer>
+        <div class="creator"> Mphohadi Pitso</div>
+        <p class="copyright">©️ 2025 | Created with passion and creativity</p>
+    </footer>
+
+
+    <script>
+
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click',function() {
+            document.body.classList.toggle('dark-theme');
+
+            const icon = this.querySelector('i');
+            if(document.body.classList.contains('dark-theme')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                this.innerHTML=`<i class="fas fa-sun"></i> Toggle Light Mode`;
+            }else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                this.innerHTML = `<i class="fas fa-moon"></i>  Toggle Dark Mode`;
+            }
+        });
+
+
+        document.getElementById('loveButton').addEventListener('click', function() {
+            const name = prompt("Please enter your name.") || "Friend";
+            const lovesHobby = confirm(`Hello ${name}! Do you love Mphohadi's girly hobby showcase?`);
+
+        if(lovesHobby) {
+            alert("Welcome❤️, "+ name +"! Thanks for loving my hobby showcase!");
+        }else{
+            alert("Enjoy exploring my showcase anyway!");
+        }
+    });
+
+    </script>
+</body>
+</html>
